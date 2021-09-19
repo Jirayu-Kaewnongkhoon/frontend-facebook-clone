@@ -1,0 +1,110 @@
+<template>
+    <div class="register-form">
+        <form>
+            <h2>Register</h2>
+
+            <label for="email">Email</label>
+            <input type="text" v-model="email" required />
+            <div class="email error">some error</div>
+
+            <label for="password">Password</label>
+            <input type="password" v-model="password" required />
+            <div class="password error"></div>
+
+            <button @click="register">register</button>
+        </form>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            email: '',
+            password: '',
+        }
+    },
+    methods: {
+        async register(e) {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch('http://localhost:3000/auth/register', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: this.email, 
+                        password: this.password 
+                    }),
+                })
+
+                const data = await response.json();
+                
+                if (data.user) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    this.$router.replace({ name: 'Home'});
+                }
+                
+            } catch (error) {
+                console.log(error);
+            }
+                
+
+            this.email = '';
+            this.password = '';
+        }
+    }
+}
+</script>
+
+<style scoped>
+    .register-form {
+        height: 100%;
+        display: grid;
+        place-items: center;
+    }
+    form{
+        width: 360px;
+        margin: 0 auto;
+        padding: 30px;
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        background: white;
+    }
+    form h2{
+        font-size: 2.4em;
+        font-weight: 900;
+        margin-bottom: 40px;
+    }
+    input{
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        font-size: 1em;
+        width: 100%;
+    }
+    label{
+        display: block;
+        margin: 20px 0 10px;
+    }
+    button{
+        margin-top: 30px;
+        border-radius: 36px;
+        background: hsl(209, 100%, 60%);
+        border:0;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 0.8em;
+        display: block;
+        padding: 10px 16px;
+        letter-spacing: 2px;
+    }
+    .error{
+        color: #ff0099;
+        margin: 10px 2px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+</style>
