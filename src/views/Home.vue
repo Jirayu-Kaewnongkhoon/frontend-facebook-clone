@@ -50,7 +50,7 @@ export default {
 
     } else {
 
-      const posts = data.data.posts;
+      const posts = data.data;
       this.posts = [...posts];
 
     }

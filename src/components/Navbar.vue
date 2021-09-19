@@ -58,12 +58,14 @@ export default {
                     method: 'GET',
                     credentials: 'include',
                 });
+                
                 const data = await response.json();
+
                 if (data.isSuccess) {
-                    console.log('done', data.isSuccess);
                     localStorage.removeItem('user');
                     this.$router.replace({ name: 'Login' });
                 }
+
             } catch (error) {
                 console.log(error);                
             }
@@ -168,7 +170,7 @@ export default {
         border-radius: 10px;
         box-shadow: 0px 5px 8px -9px hsl(0, 0%, 50%);
     }
-    .popup-menu > .menu > h2 {
+    .popup-menu > .menu {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -176,5 +178,8 @@ export default {
     }
     .popup-menu > .menu:hover {
         background: hsl(0, 0%, 95%);
+    }
+    .popup-menu > .menu > .material-icons {
+        width: 20px;
     }
 </style>

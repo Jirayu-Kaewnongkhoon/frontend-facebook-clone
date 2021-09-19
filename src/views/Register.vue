@@ -5,11 +5,11 @@
 
             <label for="email">Email</label>
             <input type="text" v-model="email" required />
-            <div class="email error">some error</div>
+            <div class="email error">{{ emailError }}</div>
 
             <label for="password">Password</label>
             <input type="password" v-model="password" required />
-            <div class="password error"></div>
+            <div class="password error">{{ passwordError }}</div>
 
             <button @click="register">register</button>
         </form>
@@ -22,11 +22,15 @@ export default {
         return {
             email: '',
             password: '',
+            emailError: '',
+            passwordError: '',
         }
     },
     methods: {
         async register(e) {
             e.preventDefault();
+
+            this.resetError();
             
             try {
                 const response = await fetch('http://localhost:3000/auth/register', {
@@ -40,6 +44,11 @@ export default {
                 })
 
                 const data = await response.json();
+
+                if (data.errors) {
+                    this.emailError = data.errors.email;
+                    this.passwordError = data.errors.password;
+                }
                 
                 if (data.user) {
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -49,10 +58,11 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-                
 
-            this.email = '';
-            this.password = '';
+        },
+        resetError() {
+            this.emailError = '';
+            this.passwordError = '';
         }
     }
 }

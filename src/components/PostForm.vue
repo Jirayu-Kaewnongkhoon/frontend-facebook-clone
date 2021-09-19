@@ -43,7 +43,7 @@ export default {
 
             // ส่ง request ให้เก็บ post ขึ้น database
             // response ที่ได้กลับมาจะมี id, date มาด้วย
-            // emit ไปให้ server
+            // emit socket ไปให้ server
             fetch('http://localhost:3000/post/add-post', {
                 method: 'POST',
                 credentials: 'include',
@@ -52,7 +52,7 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
-                const post = data.data.post;
+                const post = data.data;
                 socket.emit('add-post', post)
                 this.text = '';
             })
