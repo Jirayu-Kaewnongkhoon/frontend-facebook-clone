@@ -37,6 +37,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   
   const user = JSON.parse(localStorage.getItem('user'));
+  // TODO : ค้น user จาก db มาเช็ค ว่ามีจริงไหม
 
   if (user) {
 

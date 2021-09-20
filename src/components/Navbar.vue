@@ -26,9 +26,9 @@
                 <span class="material-icons" @click="showPopupMenu">arrow_drop_down</span>
             </div>
         </div>
-        <div v-if="showPopup" class="popup-menu">
-            <div class="menu" @click="logout">
-                <span class="material-icons">apps</span>
+        <div v-if="showPopup" class="popup">
+            <div class="popup-menu" @click="logout">
+                <span class="material-icons">logout</span>
                 <h2>Logout</h2>
             </div>
         </div>
@@ -75,15 +75,17 @@ export default {
 </script>
 
 <style>
+    .nav-container {
+        position: sticky;
+        top: 0;
+        z-index: 998;
+    }
     /* nav container style */
     .nav {
         padding: 0px 10px;
         height: 60px;
         display: flex;
         justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 998;
         background-color: white;
         box-shadow: 0px 5px 8px -9px hsl(0, 0%, 50%);
     }
@@ -158,28 +160,33 @@ export default {
         padding-right: 10px;
     }
 
-    .popup-menu {
+    .popup {
         position: absolute;
         right: 0;
         top: 55px;
         z-index: 999;
         width: 150px;
-        /* height: 200px; */
         padding: 4px;
         background-color: white;
         border-radius: 10px;
         box-shadow: 0px 5px 8px -9px hsl(0, 0%, 50%);
     }
-    .popup-menu > .menu {
+    .popup > .popup-menu {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
     }
-    .popup-menu > .menu:hover {
+    .popup > .popup-menu:hover {
+        cursor: pointer;
         background: hsl(0, 0%, 95%);
+        border-radius: 10px;
     }
-    .popup-menu > .menu > .material-icons {
+    .popup > .popup-menu > h2 {
+        font-size: 16px;
+    }
+    .popup > .popup-menu > .material-icons {
         width: 20px;
+        color: hsl(0, 0%, 50%);
     }
 </style>

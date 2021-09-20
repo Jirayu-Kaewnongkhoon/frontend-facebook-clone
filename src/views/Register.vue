@@ -3,6 +3,10 @@
         <form>
             <h2>Register</h2>
 
+            <label for="username">Username</label>
+            <input type="text" v-model="username" required />
+            <div class="username error">{{ usernameError }}</div>
+
             <label for="email">Email</label>
             <input type="text" v-model="email" required />
             <div class="email error">{{ emailError }}</div>
@@ -11,7 +15,10 @@
             <input type="password" v-model="password" required />
             <div class="password error">{{ passwordError }}</div>
 
-            <button @click="register">register</button>
+            <div class="form-button">
+                <button @click="register">register</button>
+                <button class="login" @click="goToLogin">login</button>
+            </div>
         </form>
     </div>
 </template>
@@ -20,13 +27,18 @@
 export default {
     data() {
         return {
+            username: '',
             email: '',
             password: '',
+            usernameError: '',
             emailError: '',
             passwordError: '',
         }
     },
     methods: {
+        goToLogin() {
+            this.$router.replace({ name: 'Login' });
+        },
         async register(e) {
             e.preventDefault();
 
@@ -38,6 +50,7 @@ export default {
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
+                        username: this.username,
                         email: this.email, 
                         password: this.password 
                     }),
@@ -46,6 +59,7 @@ export default {
                 const data = await response.json();
 
                 if (data.errors) {
+                    this.usernameError = data.errors.username;
                     this.emailError = data.errors.email;
                     this.passwordError = data.errors.password;
                 }
@@ -61,6 +75,7 @@ export default {
 
         },
         resetError() {
+            this.usernameError = '';
             this.emailError = '';
             this.passwordError = '';
         }
@@ -99,6 +114,13 @@ export default {
         display: block;
         margin: 20px 0 10px;
     }
+    .form-button {
+        display: flex;
+        justify-content: space-between;
+    }
+    button.login {
+        background: hsl(209, 100%, 80%);
+    }
     button{
         margin-top: 30px;
         border-radius: 36px;
@@ -110,6 +132,9 @@ export default {
         display: block;
         padding: 10px 16px;
         letter-spacing: 2px;
+    }
+    button:hover {
+        cursor: pointer;
     }
     .error{
         color: #ff0099;

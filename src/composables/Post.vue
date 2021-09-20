@@ -5,7 +5,7 @@
                 <span class="material-icons">account_circle</span>
                 <div class="user-info">
                     <strong>
-                        <span>{{ post.user.email }}</span>
+                        <span>{{ post.user.username }}</span>
                     </strong>
                     <span>{{ new Date(post.createdAt).toLocaleString() }}</span>
                 </div>

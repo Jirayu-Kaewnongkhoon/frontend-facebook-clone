@@ -11,7 +11,10 @@
             <input type="password" v-model="password" required />
             <div class="password error">{{ passwordError }}</div>
 
-            <button @click="login">login</button>
+            <div class="form-button">
+                <button @click="login">login</button>
+                <button class="register" @click="goToRegister">register</button>
+            </div>
         </form>
     </div>
 </template>
@@ -27,6 +30,9 @@ export default {
         }
     },
     methods: {
+        goToRegister() {
+            this.$router.replace({ name: 'Register' });
+        },
         async login(e) {
             e.preventDefault();
 
@@ -100,6 +106,13 @@ export default {
         display: block;
         margin: 20px 0 10px;
     }
+    .form-button {
+        display: flex;
+        justify-content: space-between;
+    }
+    button.register {
+        background: hsl(209, 100%, 80%) !important;
+    }
     button{
         margin-top: 30px;
         border-radius: 36px;
@@ -111,6 +124,9 @@ export default {
         display: block;
         padding: 10px 16px;
         letter-spacing: 2px;
+    }
+    button:hover {
+        cursor: pointer;
     }
     .error{
         color: #ff0099;
