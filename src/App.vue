@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <!-- TODO: แก้ navbar ให้แสดงตลอด -->
     <router-view />
   </div>
 </template>

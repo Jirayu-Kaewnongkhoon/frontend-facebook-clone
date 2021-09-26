@@ -3,29 +3,40 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import UserProfile from '../views/UserProfile.vue'
+import Friends from '../views/Friends.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { title: 'Home' }
     // meta: { requiresAuth: true },
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: { title: 'Login' }
   },
   {
     path: '/register',
     name: 'Register',
     component: Register,
+    meta: { title: 'Register' }
   },
   {
     path: '/userprofile',
     name: 'UserProfile',
     component: UserProfile,
+    meta: { title: 'UserProfile' }
     // meta: { requiresAuth: true },
+  },
+  {
+    path: '/friends',
+    name: 'Friends',
+    component: Friends,
+    meta: { title: 'Friends' }
   },
 ]
 
@@ -34,10 +45,14 @@ const router = createRouter({
   routes
 })
 
+router.afterEach((to, from) => {
+  document.title = `${to.meta.title} | Facebook Clone`;
+})
+
 router.beforeEach((to, from, next) => {
   
   const user = JSON.parse(localStorage.getItem('user'));
-  // TODO : ค้น user จาก db มาเช็ค ว่ามีจริงไหม
+  // TODO: ค้น user จาก db มาเช็ค ว่ามีจริงไหม
 
   if (user) {
 

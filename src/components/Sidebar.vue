@@ -2,7 +2,7 @@
     <div class="sidebar">
         <div class="sidebar-menu">
             <SidebarMenu title="Username" icon="account_circle" @click="goToProfile"/>
-            <SidebarMenu title="Friends" icon="people" />
+            <SidebarMenu title="Friends" icon="people" @click="goToFriends"/>
             <SidebarMenu title="Memories" icon="history" />
             <SidebarMenu title="Groups" icon="groups" />
             <SidebarMenu title="Saved" icon="bookmark" />
@@ -23,6 +23,9 @@ export default {
     methods: {
         goToProfile() {
             this.$router.push({ name: 'UserProfile' });
+        },
+        goToFriends() {
+            this.$router.push({ name: 'Friends' });
         }
     }
 }
