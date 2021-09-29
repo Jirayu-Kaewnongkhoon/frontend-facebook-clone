@@ -85,7 +85,8 @@ export default {
 
 <style scoped>
     .register-form {
-        height: 100%;
+        height: 100vh;
+        margin-top: 0;
         display: grid;
         place-items: center;
     }

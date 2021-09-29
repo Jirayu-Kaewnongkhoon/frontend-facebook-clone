@@ -76,9 +76,10 @@ export default {
 
 <style>
     .nav-container {
-        position: sticky;
+        position: fixed;
         top: 0;
         z-index: 998;
+        width: 100%;
     }
     /* nav container style */
     .nav {

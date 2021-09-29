@@ -74,8 +74,8 @@ export default {
     } */
 
     .friend-menu {
-        /* padding: 75px 8px 0 8px; */
-        padding: 0 8px;
+        padding: 75px 8px 0 8px;
+        /* padding: 0 8px; */
         height: 100%;
         width: 360px;
         position: fixed;

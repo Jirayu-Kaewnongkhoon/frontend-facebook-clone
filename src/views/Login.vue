@@ -77,7 +77,8 @@ export default {
 
 <style scoped>
     .login-form {
-        height: 100%;
+        height: 100vh;
+        margin-top: 0;
         display: grid;
         place-items: center;
     }

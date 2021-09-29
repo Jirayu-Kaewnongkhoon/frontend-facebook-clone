@@ -1,15 +1,12 @@
 <template>
   <div class="home">
-    <Navbar />
-    <div class="content-container">
-      <Sidebar />
-      <div class="content">
-        <Story />
-        <PostForm @add="addPost" />
-        <PostList :posts="posts" />
-      </div>
-      <Contacts />
+    <Sidebar />
+    <div class="content">
+      <Story />
+      <PostForm @add="addPost" />
+      <PostList :posts="posts" />
     </div>
+    <Contacts />
   </div>
 </template>
 
@@ -19,7 +16,6 @@ import Contacts from '../components/Contacts.vue'
 import Story from '../components/Story.vue'
 import PostForm from '../components/PostForm.vue'
 import PostList from '../components/PostList.vue'
-import Navbar from '../components/Navbar.vue'
 
 export default {
   name: 'Home',
@@ -29,7 +25,6 @@ export default {
     Story,
     PostForm,
     PostList,
-    Navbar,
   },
   async mounted() {
 
@@ -58,7 +53,26 @@ export default {
   },
   data() {
     return {
-      posts: [],
+      posts: [
+        // { _id: '1', text: 'test', user: { username: 'test1' } },
+        // { _id: '11', text: 'test', user: { username: 'test1' } },
+        // { _id: '12', text: 'test', user: { username: 'test1' } },
+        // { _id: '31', text: 'test', user: { username: 'test1' } },
+        // { _id: '41', text: 'test', user: { username: 'test1' } },
+        // { _id: '15', text: 'test', user: { username: 'test1' } },
+        // { _id: '19', text: 'test', user: { username: 'test1' } },
+        // { _id: '71', text: 'test', user: { username: 'test1' } },
+        // { _id: '18', text: 'test', user: { username: 'test1' } },
+        // { _id: '199', text: 'test', user: { username: 'test1' } },
+        // { _id: '178', text: 'test', user: { username: 'test1' } },
+        // { _id: '164', text: 'test', user: { username: 'test1' } },
+        // { _id: '1644', text: 'test', user: { username: 'test1' } },
+        // { _id: '154', text: 'test', user: { username: 'test1' } },
+        // { _id: '1966', text: 'test', user: { username: 'test1' } },
+        // { _id: '116', text: 'test', user: { username: 'test1' } },
+        // { _id: '1663', text: 'test', user: { username: 'test1' } },
+        // { _id: '2346', text: 'test', user: { username: 'test2' } }
+      ],
     }
   },
   methods: {
@@ -72,14 +86,9 @@ export default {
 <style>
   .home {
     display: flex;
-    flex-direction: column;
   }
 
-  .home > .content-container {
-    display: flex;
-  }
-
-  .content-container > .content {
+  .home > .content {
     flex: 4;
     padding: 10px 80px;
   }
