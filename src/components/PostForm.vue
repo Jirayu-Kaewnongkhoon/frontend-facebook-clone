@@ -22,17 +22,9 @@
 </template>
 
 <script>
-import io from 'socket.io-client';
-
-var socket = io('localhost:3000', { transports : ['websocket'] });
 
 export default {
-    mounted() {
-        // รับ post มาเพิ่มลง state
-        socket.on('add-post', (data) => {
-            this.$emit('add', data);
-        })
-    },
+    props: ['socket'],
     data() {
         return {
             text: '',
@@ -53,7 +45,7 @@ export default {
             .then(response => response.json())
             .then(data => {
                 const post = data.data;
-                socket.emit('add-post', post)
+                this.socket.emit('add-post', post)
                 this.text = '';
             })
             .catch((error) => {

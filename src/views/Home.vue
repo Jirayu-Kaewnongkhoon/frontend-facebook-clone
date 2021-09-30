@@ -3,7 +3,7 @@
     <Sidebar />
     <div class="content">
       <Story />
-      <PostForm @add="addPost" />
+      <PostForm :socket="socket" />
       <PostList :posts="posts" />
     </div>
     <Contacts />
@@ -18,6 +18,7 @@ import PostForm from '../components/PostForm.vue'
 import PostList from '../components/PostList.vue'
 
 export default {
+  props: ['socket'],
   name: 'Home',
   components: {
     Sidebar,
@@ -26,29 +27,13 @@ export default {
     PostForm,
     PostList,
   },
-  async mounted() {
+  mounted() {
 
-    // ส่ง request ไปขอ posts จาก database
-    // เอา response ที่ได้มา add เข้า state
-    // credentials: 'include' => ให้แนบตัวตนไปด้วย (cookie)
-    const response = await fetch('http://localhost:3000/post/get-posts', {
-        method: 'GET',
-        credentials: 'include',
-    })
+    this.joinRoomSocket();
 
-    const data = await response.json();
-    
-    if (data.error) {
+    this.receivePostSocket();
 
-      localStorage.removeItem('user');
-      this.$router.replace({ name: 'Login' });
-
-    } else {
-
-      const posts = data.data;
-      this.posts = [...posts];
-
-    }
+    this.fetchPosts();
 
   },
   data() {
@@ -76,6 +61,42 @@ export default {
     }
   },
   methods: {
+    async fetchPosts() {
+
+      // ส่ง request ไปขอ posts จาก database
+      // เอา response ที่ได้มา add เข้า state
+      // credentials: 'include' => ให้แนบตัวตนไปด้วย (cookie)
+      const response = await fetch('http://localhost:3000/post/get-posts', {
+          method: 'GET',
+          credentials: 'include',
+      })
+
+      const data = await response.json();
+      
+      if (data.error) {
+
+        localStorage.removeItem('user');
+        this.$router.replace({ name: 'Login' });
+
+      } 
+      
+      if (data.data) {
+
+        const posts = data.data;
+        this.posts = [...posts];
+
+      }
+    },
+    joinRoomSocket() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      this.socket.emit('join-room', user);
+    },
+    receivePostSocket() {
+      // รับ post มาเพิ่มลง state
+      this.socket.on('receive-post', (data) => {
+          this.addPost(data);
+      })
+    },
     addPost(post) {
       this.posts = [post, ...this.posts];
     }

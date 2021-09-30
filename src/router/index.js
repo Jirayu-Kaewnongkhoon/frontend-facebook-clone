@@ -4,13 +4,17 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import UserProfile from '../views/UserProfile.vue'
 import Friends from '../views/Friends.vue'
+import io from 'socket.io-client';
+
+var socket = io('localhost:3000', { transports : ['websocket'] });
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    meta: { title: 'Home' }
+    meta: { title: 'Home' },
+    props: { socket }
     // meta: { requiresAuth: true },
   },
   {
