@@ -36,7 +36,7 @@ export default {
             // ส่ง request ให้เก็บ post ขึ้น database
             // response ที่ได้กลับมาจะมี id, date มาด้วย
             // emit socket ไปให้ server
-            fetch('http://localhost:3000/post/add-post', {
+            fetch('http://localhost:3000/post/addPost', {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

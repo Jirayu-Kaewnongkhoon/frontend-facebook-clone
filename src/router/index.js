@@ -40,7 +40,8 @@ const routes = [
     path: '/friends',
     name: 'Friends',
     component: Friends,
-    meta: { title: 'Friends' }
+    meta: { title: 'Friends' },
+    props: { socket }
   },
 ]
 

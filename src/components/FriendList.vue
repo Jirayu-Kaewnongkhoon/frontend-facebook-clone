@@ -10,9 +10,35 @@
 import FriendItem from '../composables/FriendItem.vue'
 
 export default {
-    props: ['friends'],
+    props: ['socket', 'action'],
     components: { FriendItem },
+    data() {
+        return {
+            friends: [],
+        }
+    },
+    mounted() {
+        this.fetchFriends();
+    },
+    methods: {
+        async fetchFriends() {
+            try {
+                const result = await fetch(`http://localhost:3000/user/${this.action}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
 
+                const data = await result.json();
+
+                if (data.data) {
+                    const friends = data.data;
+                    this.friends = [...friends];
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    }
 }
 </script>
 

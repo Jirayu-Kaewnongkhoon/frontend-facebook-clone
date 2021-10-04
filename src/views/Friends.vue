@@ -1,5 +1,5 @@
 <template>
-    <div class="friends">
+    <!-- <div class="friends">
         <div class="friend-menu">
             <div class="header">
                 <h1>Friends</h1>
@@ -12,17 +12,40 @@
             <SidebarMenu title="Custom Lists" icon="people"/>
         </div>
         <FriendList :friends="friends" />
-    </div>
+    </div> -->
+    
+    <Tabs>
+        <Tab title="All Friends">
+            <FriendList :socket="socket" action="getFriends" />
+        </Tab>
+        <Tab title="Friend Requests">
+            <div class="mock">Friend Requests</div>
+        </Tab>
+        <Tab title="Suggestions">
+            <FriendList :socket="socket" action="getSuggestionFriends"/>
+        </Tab>
+        <Tab title="Birthdays">
+            <div class="mock">Birthdays</div>
+        </Tab>
+        <Tab title="Custom Lists">
+            <div class="mock">Custom Lists</div>
+        </Tab>
+    </Tabs>
 </template>
 
 <script>
 import FriendList from '../components/FriendList.vue';
 import SidebarMenu from '../components/SidebarMenu.vue';
+import Tabs from '../components/Tabs.vue';
+import Tab from '../composables/Tab.vue';
 
 export default {
+    props: ['socket'],
     components: { 
         FriendList, 
-        SidebarMenu 
+        SidebarMenu,
+        Tabs,
+        Tab 
     },
     data() {
         return {
@@ -48,34 +71,12 @@ export default {
             ],
         }
     },
-    async mounted() {
-        try {
-            const result = await fetch('http://localhost:3000/user/getFriends', {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            const data = await result.json();
-
-            if (data.data) {
-                const friends = data.data;
-                this.friends = [...friends];
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
 }
 </script>
 
 <style>
-    /* .friends {
-        margin-top: 20px;
-    } */
-
-    .friend-menu {
+    /* .friend-menu {
         padding: 75px 8px 0 8px;
-        /* padding: 0 8px; */
         height: 100%;
         width: 360px;
         position: fixed;
@@ -85,9 +86,9 @@ export default {
         background-color: white;
         overflow-x: hidden;
         box-shadow: 1px 1px 3px hsl(0, 0%, 76%);
-    }
+    } */
 
-    .friend-menu > .header {
+    /* .friend-menu > .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -95,5 +96,10 @@ export default {
     }
     .friend-menu > .header > h1 {
         font-size: 24px;
+    } */
+
+    .mock {
+        margin-left: 360px;
+        padding: 0 30px;
     }
 </style>

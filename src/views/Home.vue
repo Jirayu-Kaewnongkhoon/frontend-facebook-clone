@@ -66,7 +66,7 @@ export default {
       // ส่ง request ไปขอ posts จาก database
       // เอา response ที่ได้มา add เข้า state
       // credentials: 'include' => ให้แนบตัวตนไปด้วย (cookie)
-      const response = await fetch('http://localhost:3000/post/get-posts', {
+      const response = await fetch('http://localhost:3000/post/getPosts', {
           method: 'GET',
           credentials: 'include',
       })
