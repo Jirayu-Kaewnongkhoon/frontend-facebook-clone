@@ -37,6 +37,12 @@
 
 <script>
 export default {
+    mounted() {
+        this.$root.socket.on('addFriend', (user) => {
+            // TODO: notification
+            console.log(`user {${user.username}} added you`);
+        })
+    },
     data() {
         return {
             showPopup: false,
@@ -64,6 +70,7 @@ export default {
                 if (data.isSuccess) {
                     localStorage.removeItem('user');
                     this.$router.replace({ name: 'Login' });
+                    this.$root.socket.emit('logout');
                 }
 
             } catch (error) {

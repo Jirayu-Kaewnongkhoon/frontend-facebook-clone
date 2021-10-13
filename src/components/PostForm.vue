@@ -24,7 +24,6 @@
 <script>
 
 export default {
-    props: ['socket'],
     data() {
         return {
             text: '',
@@ -45,7 +44,7 @@ export default {
             .then(response => response.json())
             .then(data => {
                 const post = data.data;
-                this.socket.emit('add-post', post)
+                this.$root.socket.emit('add-post', post)
                 this.text = '';
             })
             .catch((error) => {

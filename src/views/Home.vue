@@ -3,7 +3,7 @@
     <Sidebar />
     <div class="content">
       <Story />
-      <PostForm :socket="socket" />
+      <PostForm />
       <PostList :posts="posts" />
     </div>
     <Contacts />
@@ -18,7 +18,6 @@ import PostForm from '../components/PostForm.vue'
 import PostList from '../components/PostList.vue'
 
 export default {
-  props: ['socket'],
   name: 'Home',
   components: {
     Sidebar,
@@ -28,8 +27,6 @@ export default {
     PostList,
   },
   mounted() {
-
-    this.joinRoomSocket();
 
     this.receivePostSocket();
 
@@ -87,13 +84,9 @@ export default {
 
       }
     },
-    joinRoomSocket() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      this.socket.emit('join-room', user);
-    },
     receivePostSocket() {
       // รับ post มาเพิ่มลง state
-      this.socket.on('receive-post', (data) => {
+      this.$root.socket.on('receive-post', (data) => {
           this.addPost(data);
       })
     },

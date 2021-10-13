@@ -1,5 +1,5 @@
 <template>
-    <div v-show="title == selectedTitle" class="tab">
+    <div v-if="title == selectedTitle" class="tab">
         <slot></slot>
     </div>
 </template>

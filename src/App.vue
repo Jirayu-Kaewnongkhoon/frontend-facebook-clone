@@ -7,6 +7,7 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
+import io from 'socket.io-client'
 
 export default {
   components: { Navbar },
@@ -17,9 +18,22 @@ export default {
       const user = JSON.parse(localStorage.getItem('user'));
 
       if (user) {
-        this.isLoggedIn = true;
+        
+        // user ยังมีสถานะ login อยู่ไหม
+        // ถ้าไม่ => เพิ่ง online, จะ connect socket, join room
+        // ถ้ามี => ก็จะไม่ connect socket, join room ซ้ำ
+        if (!this.isLoggedIn) {
+          this.socket = io('localhost:3000', { 
+              transports : ['websocket'], 
+              query: { 'userID': user } 
+          });
+          this.joinRoomSocket();
+          this.isLoggedIn = true;
+        }
+        
       } else {
         this.isLoggedIn = false;
+        this.socket = null;
       }
 
     }
@@ -27,8 +41,14 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      socket: null,
     }
   },
+  methods: {
+    joinRoomSocket() {
+      this.socket.emit('join-room');
+    },
+  }
 }
 </script>
 

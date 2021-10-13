@@ -4,9 +4,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import UserProfile from '../views/UserProfile.vue'
 import Friends from '../views/Friends.vue'
-import io from 'socket.io-client';
 
-var socket = io('localhost:3000', { transports : ['websocket'] });
 
 const routes = [
   {
@@ -14,8 +12,6 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: { title: 'Home' },
-    props: { socket }
-    // meta: { requiresAuth: true },
   },
   {
     path: '/login',
@@ -34,14 +30,12 @@ const routes = [
     name: 'UserProfile',
     component: UserProfile,
     meta: { title: 'UserProfile' }
-    // meta: { requiresAuth: true },
   },
   {
     path: '/friends',
     name: 'Friends',
     component: Friends,
     meta: { title: 'Friends' },
-    props: { socket }
   },
 ]
 

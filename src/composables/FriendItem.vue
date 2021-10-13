@@ -8,15 +8,31 @@
             <h4>{{ friend.username }}</h4>
         </div>
         <div class="friend-button">
-            <button class="view-profile">View Profile</button>
-            <button class="unfriend">Unfriend</button>
+            <button class="top-btn" @click="topButtonFunction">{{ topButtonTitle }}</button>
+            <button class="bottom-btn" @click="bottomButtonFunction">{{ bottomButtonTitle }}</button>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['friend'],
+    props: ['friend', 'template'],
+    methods: {
+        topButtonFunction() {
+            this.template.topButton.func(this.friend._id)
+        },
+        bottomButtonFunction() {
+            this.template.bottomButton.func(this.friend._id)
+        }
+    },
+    computed: {
+        topButtonTitle() {
+            return this.template.topButton.title
+        },
+        bottomButtonTitle() {
+            return this.template.bottomButton.title
+        },
+    }
 }
 </script>
 
@@ -52,18 +68,18 @@ export default {
         font-weight: bold;
     }
 
-    button.view-profile {
+    button.top-btn {
         color: hsl(214, 89%, 52%);
         background-color: hsl(210, 100%, 95%);
         margin-bottom: 6px;
     }
-    button.view-profile:hover {
+    button.top-btn:hover {
         background-color: hsl(210, 23%, 85%);
     }
-    button.unfriend {
+    button.bottom-btn {
         background-color: hsl(223, 15%, 91%);
     }
-    button.unfriend:hover {
+    button.bottom-btn:hover {
         background-color: hsl(0, 0%, 85%);
     }
 </style>

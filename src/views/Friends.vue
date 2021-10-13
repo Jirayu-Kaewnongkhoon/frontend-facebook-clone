@@ -14,15 +14,19 @@
         <FriendList :friends="friends" />
     </div> -->
     
+    <!-- TODO: สร้าง page สำหรับแต่ละ friendlist เพื่อใช้จัดการ event คนละตัว?? -->
     <Tabs>
         <Tab title="All Friends">
-            <FriendList :socket="socket" action="getFriends" />
+            <!-- <AllFriends /> -->
+            <FriendList action="getFriends" />
         </Tab>
         <Tab title="Friend Requests">
-            <div class="mock">Friend Requests</div>
+            <!-- <FriendRequests /> -->
+            <FriendList action="getFriendRequests"/>
         </Tab>
         <Tab title="Suggestions">
-            <FriendList :socket="socket" action="getSuggestionFriends"/>
+            <!-- <Suggestions /> -->
+            <FriendList action="getSuggestionFriends"/>
         </Tab>
         <Tab title="Birthdays">
             <div class="mock">Birthdays</div>
@@ -40,12 +44,11 @@ import Tabs from '../components/Tabs.vue';
 import Tab from '../composables/Tab.vue';
 
 export default {
-    props: ['socket'],
     components: { 
         FriendList, 
         SidebarMenu,
         Tabs,
-        Tab 
+        Tab,
     },
     data() {
         return {
