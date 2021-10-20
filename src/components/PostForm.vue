@@ -44,6 +44,7 @@ export default {
             .then(response => response.json())
             .then(data => {
                 const post = data.data;
+                this.$emit('addPost', post)
                 this.$root.socket.emit('add-post', post)
                 this.text = '';
             })

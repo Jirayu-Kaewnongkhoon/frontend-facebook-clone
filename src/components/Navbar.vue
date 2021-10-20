@@ -39,8 +39,14 @@
 export default {
     mounted() {
         this.$root.socket.on('addFriend', (user) => {
-            // TODO: notification
+            // TODO: notification <<<<=============
             console.log(`user {${user.username}} added you`);
+        })
+
+        this.$root.socket.on('acceptRequest', (user) => {
+            // TODO: notification <<<<=============
+            console.log(`user {${user.username}} accept you`);
+            this.$emit('joinRoom');
         })
     },
     data() {

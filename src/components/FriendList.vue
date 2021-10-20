@@ -88,6 +88,10 @@ export default {
                 if (data.isSuccess) {
                     this.$root.socket.emit(action, id);
                     this.removeFriendFromList(id);
+
+                    if (action === 'acceptRequest') {
+                        this.$root.socket.emit('join-room');
+                    }
                 }
 
             } catch (error) {

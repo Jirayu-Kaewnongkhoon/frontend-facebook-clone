@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <Navbar v-if="isLoggedIn" />
+    <Navbar v-if="isLoggedIn" @joinRoom="joinRoomSocket" />
     <router-view class="app-content"/>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
         if (!this.isLoggedIn) {
           this.socket = io('localhost:3000', { 
               transports : ['websocket'], 
-              query: { 'userID': user } 
+              query: { 'userID': user },
           });
           this.joinRoomSocket();
           this.isLoggedIn = true;

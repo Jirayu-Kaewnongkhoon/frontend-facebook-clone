@@ -3,7 +3,7 @@
     <Sidebar />
     <div class="content">
       <Story />
-      <PostForm />
+      <PostForm @addPost="addPost" />
       <PostList :posts="posts" />
     </div>
     <Contacts />
@@ -32,6 +32,9 @@ export default {
 
     this.fetchPosts();
 
+  },
+  unmounted() {
+    this.$root.socket?.removeAllListeners('receive-post');
   },
   data() {
     return {
@@ -87,7 +90,7 @@ export default {
     receivePostSocket() {
       // รับ post มาเพิ่มลง state
       this.$root.socket.on('receive-post', (data) => {
-          this.addPost(data);
+        this.addPost(data);
       })
     },
     addPost(post) {
