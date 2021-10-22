@@ -25,23 +25,28 @@ export default {
             username: 'Username',
         }
     },
-    async mounted() {
-        const id = JSON.parse(localStorage.getItem('user'));
+    mounted() {
+        
+        this.fetchUsername();
 
-        const response = await fetch('http://localhost:3000/user/getUserByID', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
-        });
-
-        const data = await response.json();
-
-        if (data.data) {
-            this.username = data.data.username
-        }
     },
     methods: {
+        async fetchUsername() {
+            const id = JSON.parse(localStorage.getItem('user'));
+
+            const response = await fetch('http://localhost:3000/user/getUserByID', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+
+            const data = await response.json();
+
+            if (data.data) {
+                this.username = data.data.username
+            }
+        },
         goToProfile() {
             this.$router.push({ name: 'UserProfile' });
         },
