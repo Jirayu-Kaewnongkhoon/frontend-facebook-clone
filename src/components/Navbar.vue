@@ -18,7 +18,7 @@
             <div class="options">
                 <div class="profile" @click="goToProfile">
                     <span class="material-icons">account_circle</span>
-                    <h2>Username</h2>
+                    <h2>{{ username }}</h2>
                 </div>
                 <span class="material-icons">apps</span>
                 <span class="material-icons">chat</span>
@@ -37,7 +37,22 @@
 
 <script>
 export default {
-    mounted() {
+    async mounted() {
+        const id = JSON.parse(localStorage.getItem('user'));
+
+        const response = await fetch('http://localhost:3000/user/getUserByID', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+
+        const data = await response.json();
+
+        if (data.data) {
+            this.username = data.data.username
+        }
+
         this.$root.socket.on('addFriend', (user) => {
             // TODO: notification <<<<=============
             console.log(`user {${user.username}} added you`);
@@ -52,6 +67,7 @@ export default {
     data() {
         return {
             showPopup: false,
+            username: 'Username',
         }
     },
     methods: {

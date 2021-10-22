@@ -74,6 +74,7 @@ export default {
       const data = await response.json();
       
       if (data.error) {
+        // TODO: แก้การทำงานหลังมี error
 
         localStorage.removeItem('user');
         this.$router.replace({ name: 'Login' });

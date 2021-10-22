@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar">
         <div class="sidebar-menu">
-            <SidebarMenu title="Username" icon="account_circle" @click="goToProfile"/>
+            <SidebarMenu :title="username" icon="account_circle" @click="goToProfile"/>
             <SidebarMenu title="Friends" icon="people" @click="goToFriends"/>
             <SidebarMenu title="Memories" icon="history" />
             <SidebarMenu title="Groups" icon="groups" />
@@ -19,6 +19,27 @@ import SidebarMenu from './SidebarMenu.vue'
 export default {
     components: {
         SidebarMenu,
+    },
+    data() {
+        return {
+            username: 'Username',
+        }
+    },
+    async mounted() {
+        const id = JSON.parse(localStorage.getItem('user'));
+
+        const response = await fetch('http://localhost:3000/user/getUserByID', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+
+        const data = await response.json();
+
+        if (data.data) {
+            this.username = data.data.username
+        }
     },
     methods: {
         goToProfile() {
