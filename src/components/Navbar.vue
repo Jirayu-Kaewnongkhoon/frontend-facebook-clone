@@ -76,7 +76,8 @@ export default {
             }
         },
         goToProfile() {
-            this.$router.push({ name: 'UserProfile' });
+            const id = JSON.parse(localStorage.getItem('user'));
+            this.$router.push({ name: 'UserProfile', params: { id } });
         },
         goToHome() {
             this.$router.push({ name: 'Home' });

@@ -25,7 +25,7 @@ export default {
             const templates = {
                 getFriends: {
                     topButton: {
-                        func: (id) => console.log('view profile', id),
+                        func: (id) => this.$router.push({ name: 'UserProfile', params: { id }}),
                         title: 'View Profile'
                     },
                     bottomButton: {

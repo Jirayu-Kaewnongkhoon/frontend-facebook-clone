@@ -26,10 +26,11 @@ const routes = [
     meta: { title: 'Register' }
   },
   {
-    path: '/userprofile',
+    path: '/userprofile/:id',
     name: 'UserProfile',
     component: UserProfile,
-    meta: { title: 'UserProfile' }
+    meta: { title: 'UserProfile' },
+    props: true,
   },
   {
     path: '/friends',
