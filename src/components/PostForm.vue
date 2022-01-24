@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { useAxios } from '../guard/axiosInterceptor';
 
 export default {
     data() {
@@ -30,27 +31,25 @@ export default {
         }
     },
     methods: {
-        handleSubmit() {
+        async handleSubmit() {
 
             // ส่ง request ให้เก็บ post ขึ้น database
             // response ที่ได้กลับมาจะมี id, date มาด้วย
             // emit socket ไปให้ server
-            fetch('http://localhost:3000/post/addPost', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: this.text }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                const post = data.data;
-                this.$emit('addPost', post)
-                this.$root.socket.emit('add-post', post)
-                this.text = '';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            try {
+                
+                const { data } = await useAxios.post('/post/addPost', { text: this.text });
+    
+                if (data.data) {
+                    const post = data.data;
+                    this.$emit('addPost', post)
+                    this.$root.socket.emit('add-post', post)
+                    this.text = '';
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
 
         }
     }

@@ -8,6 +8,7 @@
 
 <script>
 import FriendItem from '../composables/FriendItem.vue'
+import { useAxios } from '../guard/axiosInterceptor';
 
 export default {
     props: ['action'],
@@ -59,12 +60,7 @@ export default {
         },
         async fetchFriends() {
             try {
-                const result = await fetch(`http://localhost:3000/user/${this.action}`, {
-                    method: 'GET',
-                    credentials: 'include',
-                });
-
-                const data = await result.json();
+                const { data } = await useAxios.get(`/user/${this.action}`);
 
                 if (data.data) {
                     const friends = data.data;
@@ -76,14 +72,7 @@ export default {
         },
         async friendAction(action, id) {
             try {
-                const result = await fetch(`http://localhost:3000/user/${action}`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ friend: id })
-                });
-
-                const data = await result.json();
+                const { data } = await useAxios.post(`/user/${action}`, { friend: id });
 
                 if (data.isSuccess) {
                     this.$root.socket.emit(action, id);

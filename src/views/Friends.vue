@@ -52,26 +52,7 @@ export default {
     },
     data() {
         return {
-            friends: [
-                // { _id: '1', username: 'test1' },
-                // { _id: '11', username: 'test1' },
-                // { _id: '12', username: 'test1' },
-                // { _id: '31', username: 'test1' },
-                // { _id: '41', username: 'test1' },
-                // { _id: '15', username: 'test1' },
-                // { _id: '19', username: 'test1' },
-                // { _id: '71', username: 'test1' },
-                // { _id: '18', username: 'test1' },
-                // { _id: '199', username: 'test1' },
-                // { _id: '178', username: 'test1' },
-                // { _id: '164', username: 'test1' },
-                // { _id: '1644', username: 'test1' },
-                // { _id: '154', username: 'test1' },
-                // { _id: '1966', username: 'test1' },
-                // { _id: '116', username: 'test1' },
-                // { _id: '1663', username: 'test1' },
-                // { _id: '2346', username: 'test2' }
-            ],
+            friends: [],
         }
     },
 }

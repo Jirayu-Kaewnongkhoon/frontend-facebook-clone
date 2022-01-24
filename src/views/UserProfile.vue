@@ -51,6 +51,7 @@
 <script>
 import PostForm from '../components/PostForm.vue';
 import PostList from '../components/PostList.vue';
+import { useAxios } from '../guard/axiosInterceptor';
 
 export default {
   components: { PostList, PostForm },
@@ -71,14 +72,7 @@ export default {
     async fetchUser() {
       try {
 
-        const response = await fetch('http://localhost:3000/user/getUserByID', {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: this.id })
-        });
-
-        const data = await response.json();
+        const { data } = await useAxios.post('/user/getUserByID', { id: this.id });
 
         if (data.data) {
           this.user = data.data
@@ -92,18 +86,7 @@ export default {
 
       try {
 
-        const response = await fetch('http://localhost:3000/post/getOwnPosts', {
-          method: 'GET',
-          credentials: 'include',
-        })
-  
-        const data = await response.json();
-        
-        if (data.error) {
-  
-          console.log(data.error);
-  
-        } 
+        const { data } = await useAxios.get('/post/getOwnPosts');
         
         if (data.data) {
   

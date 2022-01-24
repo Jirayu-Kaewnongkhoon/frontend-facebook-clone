@@ -22,57 +22,66 @@
                 </div>
                 <span class="material-icons">apps</span>
                 <span class="material-icons">chat</span>
-                <span class="material-icons">notifications</span>
+                <div class="notification-icon">
+                    <span class="material-icons" @click="showNotifications">notifications</span>
+                    <span v-if="notifications.length !== 0" class="badge">{{ notifications.length }}</span>
+                </div>
                 <span class="material-icons" @click="showPopupMenu">arrow_drop_down</span>
             </div>
         </div>
         <div v-if="showPopup" class="popup">
-            <div class="popup-menu" @click="logout">
+            <div class="popup-list" @click="logout">
                 <span class="material-icons">logout</span>
                 <h2>Logout</h2>
+            </div>
+        </div>
+        <div v-if="showNotification" class="popup">
+            <div v-for="notification in notifications" :key="notification._id" class="notificaion" @click="goToFriendList">
+                <span class="material-icons">account_circle</span>
+                <div>
+                    <h2>{{ notification.username }} <span style="font-size: 13px; font-weight: normal;">{{ notification.text }}</span></h2>
+                    <p style="font-size: 11px;color: gray;">1 minute ago</p>
+                </div>
+            </div>
+            <div v-if="notifications.length == 0" style="text-align: center; font-size: 13px; margin: 13px 0;">
+                <h2>There are no notificaions...</h2>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { useAxios } from '../guard/axiosInterceptor';
+
 export default {
     mounted() {
         
         this.fetchUsername();
 
-        this.$root.socket.on('addFriend', (user) => {
-            // TODO: notification <<<<=============
-            console.log(`user {${user.username}} added you`);
-        })
-
-        this.$root.socket.on('acceptRequest', (user) => {
-            // TODO: notification <<<<=============
-            console.log(`user {${user.username}} accept you`);
-            this.$emit('joinRoom');
-        })
+        this.receiveFriendNotificationSocket();
     },
     data() {
         return {
             showPopup: false,
+            showNotification: false,
             username: 'Username',
+            notifications: [],
         }
     },
     methods: {
         async fetchUsername() {
             const id = JSON.parse(localStorage.getItem('user'));
 
-            const response = await fetch('http://localhost:3000/user/getUserByID', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            });
+            try {
+                
+                const { data } = await useAxios.post('/user/getUserByID', { id });
+    
+                if (data.data) {
+                    this.username = data.data.username
+                }
 
-            const data = await response.json();
-
-            if (data.data) {
-                this.username = data.data.username
+            } catch(error) {
+                console.log(error);
             }
         },
         goToProfile() {
@@ -82,18 +91,49 @@ export default {
         goToHome() {
             this.$router.push({ name: 'Home' });
         },
+        goToFriendList() {
+            this.$router.push({ name: 'Friends' });
+        },
+        showNotifications() {
+            this.showNotification = !this.showNotification;
+            this.showPopup = false;
+        },
         showPopupMenu() {
             this.showPopup = !this.showPopup;
+            this.showNotification = false;
+        },
+        receiveFriendNotificationSocket() {
+
+            // รอรับ socket event เมื่อมีการ add friend
+            // จากนั้นจะสร้าง notification ขึ้นมา
+            this.$root.socket.on('addFriend', (user) => {
+                const friendNotification = {
+                    ...user,
+                    action: 'addFriend',
+                    text: 'send you a friend request',
+                };
+
+                this.notifications = [friendNotification, ...this.notifications];
+            })
+
+            // รอรับ socket event เมื่อมีการ accept friend request
+            // จากนั้นจะสร้าง notification ขึ้นมา
+            this.$root.socket.on('acceptRequest', (user) => {
+                this.$emit('joinRoom');
+
+                const friendNotification = {
+                    ...user,
+                    action: 'acceptRequest',
+                    text: 'accepted your friend request'
+                };
+                
+                this.notifications = [friendNotification, ...this.notifications];
+            })
         },
         async logout() {
             try {
-                const response = await fetch('http://localhost:3000/auth/logout', {
-                    method: 'GET',
-                    credentials: 'include',
-                });
+                const { data } = await useAxios.get('/auth/logout');
                 
-                const data = await response.json();
-
                 if (data.isSuccess) {
                     localStorage.removeItem('user');
                     this.$router.replace({ name: 'Login' });
@@ -169,14 +209,14 @@ export default {
         align-items: center;
     }
     .page-nav > .material-icons,
-    .options > .material-icons,
+    .options .material-icons,
     .profile > .material-icons {
         color: hsl(0, 0%, 50%);
         width: 90px;
         font-size: 30px;
         text-align: center;
     }
-    .nav > * > .material-icons:hover, 
+    .nav > * .material-icons:hover, 
     .options > .profile:hover  {
         cursor: pointer;
         background: hsl(0, 0%, 95%);
@@ -184,7 +224,7 @@ export default {
     }
 
     /* options style */
-    .options > .material-icons {
+    .options .material-icons {
         width: 60px;
     }
     .profile > .material-icons {
@@ -200,28 +240,59 @@ export default {
         right: 0;
         top: 55px;
         z-index: 999;
-        width: 150px;
+        width: 330px;
+        height: 50px;
         padding: 4px;
         background-color: white;
         border-radius: 10px;
         box-shadow: 0px 5px 8px -9px hsl(0, 0%, 50%);
     }
-    .popup > .popup-menu {
+    .popup > .popup-list {
+        height: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
     }
-    .popup > .popup-menu:hover {
+    .popup > .popup-list:hover,
+    .popup > .notificaion:hover {
         cursor: pointer;
         background: hsl(0, 0%, 95%);
         border-radius: 10px;
     }
-    .popup > .popup-menu > h2 {
+    .popup > .popup-list > h2,
+    .popup > .notificaion h2 {
         font-size: 16px;
     }
-    .popup > .popup-menu > .material-icons {
+    .popup > .popup-list > .material-icons,
+    .popup > .notificaion > .material-icons {
         width: 20px;
         color: hsl(0, 0%, 50%);
+    }
+    
+    .popup > .notificaion > .material-icons {
+        font-size: 50px;
+        width: 50px;
+        margin-right: 12px;
+    }
+
+    .popup > .notificaion {
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    .notification-icon {
+        position: relative;
+    }
+    .notification-icon .badge {
+        position: absolute;
+        top: -5px;
+        right: 0px;
+        padding: 2px 6px;
+        border-radius: 50%;
+        background-color: red;
+        color: white;
+        font-size: 13px;
     }
 </style>

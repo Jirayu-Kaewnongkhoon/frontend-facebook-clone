@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { useAxios } from '../guard/axiosInterceptor';
+
 export default {
     data() {
         return {
@@ -39,23 +41,11 @@ export default {
             this.resetError();
 
             try {
-                const response = await fetch('http://localhost:3000/auth/login', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        email: this.email, 
-                        password: this.password 
-                    }),
-                })
 
-                const data = await response.json();
-
-                if (data.errors) {
-                    console.log(data);
-                    this.emailError = data.errors.email;
-                    this.passwordError = data.errors.password;
-                }
+                const { data } = await useAxios.post('/auth/login', {
+                    email: this.email,
+                    password: this.password
+                });
                 
                 if (data.user) {
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -63,7 +53,13 @@ export default {
                 }
                 
             } catch (error) {
-                console.log(error);
+
+                // TODO: เพิ่ม dialog สำหรับแต่ละ error
+
+                const errors = error.response.data.errors;
+
+                this.emailError = errors.email;
+                this.passwordError = errors.password;
             }
                 
         },

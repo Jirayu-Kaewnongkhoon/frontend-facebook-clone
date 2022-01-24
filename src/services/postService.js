@@ -2,7 +2,7 @@ export const postService = {
     getPosts,
     log,
 }
-
+// TODO: ลบ หรือ เก็บ
 function getPosts() {
     return fetch('http://localhost:3000/get-posts', {
         method: 'GET',

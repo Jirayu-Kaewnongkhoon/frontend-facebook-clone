@@ -23,7 +23,7 @@ export default {
         // ถ้าไม่ => เพิ่ง online, จะ connect socket, join room
         // ถ้ามี => ก็จะไม่ connect socket, join room ซ้ำ
         if (!this.isLoggedIn) {
-          this.socket = io('localhost:3000', { 
+          this.socket = io('https://backend-facebook-clone.herokuapp.com', { 
               transports : ['websocket'], 
               query: { 'userID': user },
           });

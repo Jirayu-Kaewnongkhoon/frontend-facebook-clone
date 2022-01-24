@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { useAxios } from '../guard/axiosInterceptor';
 import SidebarMenu from './SidebarMenu.vue'
 
 export default {
@@ -34,17 +35,16 @@ export default {
         async fetchUsername() {
             const id = JSON.parse(localStorage.getItem('user'));
 
-            const response = await fetch('http://localhost:3000/user/getUserByID', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            });
+            try {
+                
+                const { data } = await useAxios.post('/user/getUserByID', { id });
+    
+                if (data.data) {
+                    this.username = data.data.username
+                }
 
-            const data = await response.json();
-
-            if (data.data) {
-                this.username = data.data.username
+            } catch(error) {
+                console.log(error);
             }
         },
         goToProfile() {
