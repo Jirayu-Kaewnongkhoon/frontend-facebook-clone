@@ -23,7 +23,7 @@ export default {
         // ถ้าไม่ => เพิ่ง online, จะ connect socket, join room
         // ถ้ามี => ก็จะไม่ connect socket, join room ซ้ำ
         if (!this.isLoggedIn) {
-          this.socket = io(process.env.API_URL, { 
+          this.socket = io(process.env.VUE_APP_API_URL, { 
               transports : ['websocket'], 
               query: { 'userID': user },
           });
