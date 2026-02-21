@@ -1,7 +1,7 @@
 module.exports = {
   devServer: {
     allowedHosts: [
-      'all'
+      'facebook-clone-production-05a6.up.railway.app'
     ]
   }
 }
